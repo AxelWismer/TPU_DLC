@@ -28,7 +28,7 @@ public class ControladorTest {
     public void TestArmarIndiceInverso() {
         instance.armarIndiceInverso();
         System.out.println("Finalizado");
-        assert instance.vocabulario.size() > 3000;
+        assert instance.vocabulario.vocabulario.size() > 3000;
     }
 
     @org.junit.Test

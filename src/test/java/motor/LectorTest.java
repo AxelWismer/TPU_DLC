@@ -33,7 +33,7 @@ public class LectorTest {
         String[] documentos = controlador.getDocumentosEnCarpeta("DocumentosTP1");
         ArrayList<Hashtable<String, Integer>> vocabulario = new ArrayList<>();
         for (String documento : documentos) {
-            vocabulario.add(instance.armarVocabulario(documento));
+            vocabulario.add(instance.armarVocabulario("DocumentosTP1", documento));
         }
         assertEquals(593, vocabulario.size());
         //assertEquals(13473, instance.vocabulario.size());

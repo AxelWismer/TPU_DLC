@@ -6,16 +6,8 @@ import java.util.Scanner;
 
 public class Lector {
     //Guarda todas las palabras que se encuentran en un documento
-    public String documento;
     //    public Hashtable<String, Palabra> vocabulario = new Hashtable<String, Palabra>();
     protected Hashtable<String, Integer> vocabulario = new Hashtable<>();
-
-    public Lector() {
-    }
-
-    public Lector(String documento) {
-        this.documento = documento;
-    }
 
     public void agregarPalabra(String palabra){
         // Si el vocabulario ya contiene la palabra aumentar el tf en 1
@@ -28,30 +20,17 @@ public class Lector {
         }
     }
 
-    @Override
-    public String toString() {
-        return "Vocabulario{" +
-                "documento='" + documento + '\'' +
-                ", vocabulario=" + vocabulario +
-                '}';
-    }
-
-    public Hashtable<String,Integer> armarVocabulario(String documento){
-        this.documento = documento;
-        return armarVocabulario();
-    }
-
-    public Hashtable<String,Integer> armarVocabulario(){
+    public Hashtable<String,Integer> armarVocabulario(String carpeta, String documento){
         //Abrir el documento seleccionado
         Scanner scanner;
         try {
-            scanner = new Scanner(new File("DocumentosTP1/" + this.documento), "Cp1252");
+            scanner = new Scanner(new File(carpeta +  "/" + documento), "Cp1252");
         }
         catch (FileNotFoundException e) {
             System.out.println("Archivo no encontrado");
             return null;
         }
-        //Iterar el archivo obteniendo parlabras
+        //Iterar el archivo obteniendo palabras
         String palabra;
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine();

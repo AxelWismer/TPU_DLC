@@ -12,7 +12,7 @@ public class Controlador {
 
     Lector lector = new Lector();
 
-    public Hashtable<String, Palabra> vocabulario = new Hashtable<>();
+    public Vocabulario vocabulario = new Vocabulario();
 
     public void iniciar() {
         //Inicia el controlador obteniendo todas sus variables
@@ -37,45 +37,33 @@ public class Controlador {
         return documentos;
     }
 
-    public void agregarDocumentoAVocabulario(Integer documento, Hashtable<String, Integer> vocabularioDocumento) {
-        Iterator<String> iterator = vocabularioDocumento.keySet().iterator();
-        String NombrePalabra;
-        while (iterator.hasNext()) {
-            NombrePalabra = iterator.next();
-            //Si el vocabulario contiene la palabra a agregar
-            if (vocabulario.containsKey(NombrePalabra)) {
-                //Agregar la palabra buscando su tf en vocabularioDocumento
-                vocabulario.get(NombrePalabra).agregarDocumento(documento, vocabularioDocumento.get(NombrePalabra));
-            }
-            else {
-                //Crea una nueva palabra, agrega el documento y la agrega al vocabulario
-                Palabra palabra = new Palabra();
-                palabra.agregarDocumento(documento, vocabularioDocumento.get(NombrePalabra));
-                vocabulario.put(NombrePalabra, palabra);
-            }
-        }
-    }
-
+    //Manejo del indice inverso
     public void armarIndiceInverso() {
+        //Genera el indice de la forma en que se debera guardar y acceder en la busqueda
         documentosEnCarpeta = getDocumentosEnCarpeta(nombreCarpetaDocumentos);
         for (int i = 0; i < documentosEnCarpeta.length; i++) {
             System.out.println("Documento" + "(" + (i + 1) + "): " + documentosEnCarpeta[i]);
-            agregarDocumentoAVocabulario(documentosALeer.get(documentosEnCarpeta[i]), lector.armarVocabulario(documentosEnCarpeta[i]));
+            vocabulario.agregarDocumentoAVocabulario(documentosALeer.get(documentosEnCarpeta[i]),
+                    lector.armarVocabulario(nombreCarpetaDocumentos, documentosEnCarpeta[i]));
         }
-        guardarIndiceInverso(vocabulario);
+        vocabulario.guardar();
     }
 
-    public void guardarIndiceInverso(Hashtable<String, Palabra> vocabulario) {
-        //Guardar el indice inverso ya generado
+    //Manejo del indice por documento
+    public void armarIndiceDeDocumento(String documento){
+        System.out.println(documento);
+        Hashtable<String, Integer> vocabularioDocumento =
+                lector.armarVocabulario(nombreCarpetaDocumentos, documento);
+        guardarIndicePorDocumento(vocabularioDocumento);
     }
 
     public void armarIndicePorDocumento() {
+        //Genera un indice por documento de la forma en que es leido
         documentosEnCarpeta = getDocumentosEnCarpeta(nombreCarpetaDocumentos);
-        Hashtable<String, Integer> vocabularioDocumento;
+        System.out.println("Generando indice de documentos...");
         for (int i = 0; i < documentosEnCarpeta.length; i++) {
-            System.out.println("Documento" + "(" + (i + 1) + "): " + documentosEnCarpeta[i]);
-            vocabularioDocumento = lector.armarVocabulario(documentosEnCarpeta[i]);
-            guardarIndicePorDocumento(vocabularioDocumento);
+            System.out.print("Documento" + "(" + (i + 1) + "): ");
+            armarIndiceDeDocumento(documentosEnCarpeta[i]);
         }
     }
 
