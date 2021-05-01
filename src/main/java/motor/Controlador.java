@@ -7,13 +7,14 @@ import java.util.Iterator;
 public class Controlador {
     String nombreCarpetaDocumentos = "DocumentosTP1";
     public Hashtable<String, Integer> documentosALeer = new Hashtable<>();
+    String archivoSerializacion = "DB/vocabulario";
 
     String[] documentosEnCarpeta;
 
     Lector lector = new Lector();
+    Escritor escritor = new Escritor();
 
     public Vocabulario vocabulario = new Vocabulario();
-
     public void iniciar() {
         //Inicia el controlador obteniendo todas sus variables
         //Variables necesarias:
@@ -42,19 +43,13 @@ public class Controlador {
         //Genera el indice de la forma en que se debera guardar y acceder en la busqueda
         documentosEnCarpeta = getDocumentosEnCarpeta(nombreCarpetaDocumentos);
         for (int i = 0; i < documentosEnCarpeta.length; i++) {
+//        for (int i = 0; i < 50; i++) {
             System.out.println("Documento" + "(" + (i + 1) + "): " + documentosEnCarpeta[i]);
             vocabulario.agregarDocumentoAVocabulario(documentosALeer.get(documentosEnCarpeta[i]),
                     lector.armarVocabulario(nombreCarpetaDocumentos, documentosEnCarpeta[i]));
         }
-        vocabulario.guardar();
-    }
-
-    //Manejo del indice por documento
-    public void armarIndiceDeDocumento(String documento){
-        System.out.println(documento);
-        Hashtable<String, Integer> vocabularioDocumento =
-                lector.armarVocabulario(nombreCarpetaDocumentos, documento);
-        guardarIndicePorDocumento(vocabularioDocumento);
+        //Modificar este metodo por el guardado en bd
+        //escritor.guardarIndicePorDocumento(vocabulario, archivoSerializacion);
     }
 
     public void armarIndicePorDocumento() {
@@ -63,7 +58,9 @@ public class Controlador {
         System.out.println("Generando indice de documentos...");
         for (int i = 0; i < documentosEnCarpeta.length; i++) {
             System.out.print("Documento" + "(" + (i + 1) + "): ");
-            armarIndiceDeDocumento(documentosEnCarpeta[i]);
+            System.out.println(documentosEnCarpeta[i]);
+            Hashtable<String, Integer> vocabularioDocumento =
+                    lector.armarVocabulario(nombreCarpetaDocumentos, documentosEnCarpeta[i]);
         }
     }
 

@@ -1,9 +1,10 @@
 package motor;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-public class Vocabulario {
+public class Vocabulario implements Serializable {
     public Hashtable<String, Palabra> vocabulario = new Hashtable<>();
 
     public void agregarDocumentoAVocabulario(Integer id_documento, Hashtable<String, Integer> vocabularioDocumento) {

@@ -1,10 +1,11 @@
 package motor;
 
+import java.io.*;
 import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args) {
-    //Test de un vocabulario
+        //Test de un vocabulario
 //        Lector vocabulario = new Lector("doc");
 //        vocabulario.agregarPalabra("hola");
 //        vocabulario.agregarPalabra("chau");
@@ -18,9 +19,11 @@ public class Test {
 //        System.out.println(vocabulario.toString());
 //        System.out.println("cantidad de palabras: " + vocabulario.vocabulario.size());
 
-    //Controlador
-    Controlador controlador = new Controlador();
-        System.out.println(Arrays.toString(controlador.getDocumentosEnCarpeta("DocumentosTP1")));
+        //Controlador
+//    Controlador controlador = new Controlador();
+//        System.out.println(Arrays.toString(controlador.getDocumentosEnCarpeta("DocumentosTP1")));
+
+
 
     }
 }

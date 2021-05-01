@@ -1,13 +1,30 @@
 package motor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-public class Palabra {
+public class Palabra implements Serializable {
     //Cantidad de documentos en los que se encuentra la palabra
     public int nr = 0;
     //Cantidad de apariciones maximas
     public int maxTf = 0;
+
+    public int getNr() {
+        return nr;
+    }
+
+    public void setNr(int nr) {
+        this.nr = nr;
+    }
+
+    public int getMaxTf() {
+        return maxTf;
+    }
+
+    public void setMaxTf(int maxTf) {
+        this.maxTf = maxTf;
+    }
 
     //Documentos que utilizan esa palabra ordenados de mayor a menor por su tf
     public Hashtable<Integer, ArrayList<Integer>> posteo = new Hashtable<>();
