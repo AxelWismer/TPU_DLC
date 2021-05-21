@@ -24,4 +24,13 @@ public class BuscadorTest {
         System.out.println(vocabulario.vocabulario.size());
         assertTrue(vocabulario.vocabulario.size() > 10000);
     }
+
+    @org.junit.Test
+    public void buscarTest(){
+        instance.buscar(new String[]{"a", "the", "at", "adseawd"}, 3);
+        instance.buscar(new String[]{"a", "the", "at", "adseawd"}, 5);
+        instance.buscar(new String[]{"a", "the", "at", "adseawd"}, 7);
+        //Valor de R mayor al de la lista
+        instance.buscar(new String[]{"a", "the", "at", "adseawd"}, 300);
+    }
 }

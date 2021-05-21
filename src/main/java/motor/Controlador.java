@@ -39,17 +39,18 @@ public class Controlador {
     }
 
     //Manejo del indice inverso
-    public void armarIndiceInverso() {
+    public void armarIndiceInverso(int cantDocumentos) {
         //Genera el indice de la forma en que se debera guardar y acceder en la busqueda
+        //Este meto se utiliza para serializar archivos para hacer pruebas con el buscador
         documentosEnCarpeta = getDocumentosEnCarpeta(nombreCarpetaDocumentos);
-        for (int i = 0; i < documentosEnCarpeta.length; i++) {
-//        for (int i = 0; i < 50; i++) {
+//        for (int i = 0; i < documentosEnCarpeta.length; i++) {
+        for (int i = 0; i < cantDocumentos; i++) {
             System.out.println("Documento" + "(" + (i + 1) + "): " + documentosEnCarpeta[i]);
             vocabulario.agregarDocumentoAVocabulario(documentosALeer.get(documentosEnCarpeta[i]),
                     lector.armarVocabulario(nombreCarpetaDocumentos, documentosEnCarpeta[i]));
         }
         //Modificar este metodo por el guardado en bd
-        //escritor.guardarIndicePorDocumento(vocabulario, archivoSerializacion);
+        escritor.guardarIndicePorDocumento(vocabulario, archivoSerializacion);
     }
 
     public void armarIndicePorDocumento() {

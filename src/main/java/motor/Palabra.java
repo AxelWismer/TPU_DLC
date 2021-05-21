@@ -2,7 +2,9 @@ package motor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
+import java.util.TreeMap;
 
 public class Palabra implements Serializable {
     //Cantidad de documentos en los que se encuentra la palabra
@@ -27,7 +29,7 @@ public class Palabra implements Serializable {
     }
 
     //Documentos que utilizan esa palabra ordenados de mayor a menor por su tf
-    public Hashtable<Integer, ArrayList<Integer>> posteo = new Hashtable<>();
+    public TreeMap<Integer, ArrayList<Integer>> posteo = new TreeMap<>(Collections.reverseOrder());
 
     public void agregarDocumento(Integer documento, int tf) {
         //Seteo de las variables de la palabra
