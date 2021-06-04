@@ -5,7 +5,7 @@ import motor.Palabra;
 import java.util.*;
 
 public class Documentos {
-    Hashtable<Integer, Float> documentos = new Hashtable<>();
+   public Hashtable<Integer, Float> documentos = new Hashtable<>();
 
     public void agregarPalabra(Palabra palabra, int R) {
         //Se iteran los R primeros valores tf de la lista de posteo en orden decendente

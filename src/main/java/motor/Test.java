@@ -2,7 +2,9 @@ package motor;
 
 import java.io.*;
 import java.util.Arrays;
-
+import buscador.Buscador;
+import buscador.Documentos;
+import java.util.List;
 public class Test {
     public static void main(String[] args) {
         //Test de un vocabulario
@@ -23,7 +25,15 @@ public class Test {
 //    Controlador controlador = new Controlador();
 //        System.out.println(Arrays.toString(controlador.getDocumentosEnCarpeta("DocumentosTP1")));
 
+        buscarPalabras();
 
-
+    }
+    private static void buscarPalabras(){
+        Buscador b = new  Buscador();
+        List list=b.buscar(new String[] {"a","no","oscura"}, 0);
+        for(Object o : list){
+            Documentos d=(Documentos)o;
+            System.out.println(d.documentos);
+        }
     }
 }

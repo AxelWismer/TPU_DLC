@@ -1,0 +1,85 @@
+package dbentities;
+
+public class Documento{
+    int id;
+    String nombre;
+    int words;
+    String ruta;
+    Vocabulario v;
+    public Documento() {
+        v=new Vocabulario();
+    }
+    public Documento(String nombre,String ruta){
+        this();
+        this.nombre=nombre;
+        this.ruta=ruta;
+    }
+
+    public Documento(int id, String nombre, int words, String ruta) {
+        
+        this.id = id;
+        this.nombre = nombre;
+        this.words = words;
+        this.ruta = ruta;
+    }
+    public void addPalabra(String w){
+        v.add(w);
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public boolean contains(String w){
+        return this.v.contains(w);
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setWords(int words) {
+        this.words = words;
+    }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
+    }
+
+    public Documento(int id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getWords() {
+        return words;
+    }
+
+    public String getRuta() {
+        return ruta;
+    }
+    public void sum(){
+        words++;
+    }
+    public Vocabulario getV() {
+        return v;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Documento{" + "id=" + id + ", nombre=" + nombre + ", words=" + words + ", ruta=" + ruta + ",voc="+v.size()+'}';
+    }
+    public String longToString(){
+        StringBuilder sb= new  StringBuilder("Documento{" + "id=" + id + ", nombre=" + nombre + ", words=" + words + ", ruta=" + ruta + ",voc="+v.size()+"}\n");
+        sb.append(v.toString());
+        return sb.toString();
+    }
+   
+    
+}

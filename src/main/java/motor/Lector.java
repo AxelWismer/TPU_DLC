@@ -20,18 +20,18 @@ public class Lector {
         //Iterar el archivo obteniendo palabras
         String palabra;
         Hashtable<String, Integer> vocabulario = new Hashtable<>();
-        while (scanner.hasNext()) {
-            palabra = scanner.next();
-            if (!palabra.isBlank()) {
-                if (vocabulario.containsKey(palabra)){
-                    vocabulario.put(palabra, vocabulario.get(palabra) + 1);
-                }
-                else{
-                    // Sino crear la entrada con tf 1
-                    vocabulario.put(palabra, 1);
-                }
-            }
-        }
+//        while (scanner.hasNext()) {
+//            palabra = scanner.next();
+//            if (!palabra.isBlank()) {
+//                if (vocabulario.containsKey(palabra)){
+//                    vocabulario.put(palabra, vocabulario.get(palabra) + 1);
+//                }
+//                else{
+//                    // Sino crear la entrada con tf 1
+//                    vocabulario.put(palabra, 1);
+//                }
+//            }
+//        }
         return vocabulario;
     }
 }
