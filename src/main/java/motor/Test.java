@@ -5,6 +5,7 @@ import java.util.Arrays;
 import buscador.Buscador;
 import buscador.Documentos;
 import java.util.List;
+import filemanipulation.*;
 public class Test {
     public static void main(String[] args) {
         //Test de un vocabulario
@@ -36,4 +37,8 @@ public class Test {
             System.out.println(d.documentos);
         }
     }
+	private static void guardarBD(){
+		LectorDocumentos ld = new LectorDocumentos();
+        ld.guardarDocumentosBatch();
+		System.out.println("Termine jeje");
 }
