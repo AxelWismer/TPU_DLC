@@ -55,18 +55,18 @@ public class LectorDocumentos {
         LinkedList<String> rutas= new LinkedList<>();
         LinkedList<Documento> listDoc= new LinkedList<>();
         GestorVocabulario gv = new GestorVocabulario();
-        int stepBatch=5;
+        int stepBatch=2;
         int totalDocs=0;
         int cont=0;
         try{
-            File d=new File("../mifiles");
+            File d=new File("../Files");
             //File d = new File("../../Files");
             Stream.of(d.listFiles((arch,nom)->nom.endsWith(".txt")))
                 .filter(p->p.isFile() && !p.isHidden())
                 .forEach(doc->rutas.addFirst(doc.toString()));
             int docs=rutas.size();
             System.out.println("Se deben procesar "+docs+" documentos");
-            
+            long t1=System.currentTimeMillis();
             for(String ruta : rutas){
                 cont++;
                 leerRuta(ruta,listDoc);
@@ -78,9 +78,15 @@ public class LectorDocumentos {
                     listDoc=new LinkedList<>();
                     System.out.println("Se procesaron "+totalDocs+" documentos");
                 }
+                if(totalDocs==100){
+                    System.out.println("Se procesaron 100 documetnos");
+                    break;
+                }
             }
             gv.guardarLoteDocumentosJPABatch(listDoc);
-            
+            long t2 = System.currentTimeMillis();
+            long tt=t2-t1;
+            System.out.println("Se tardo "+tt+" milisegundos en procesar 100 docs");
         }
         catch(FileNotFoundException sqex){
             System.out.println(sqex.getMessage());

@@ -81,7 +81,8 @@ public class bdaccesspoint {
         Palabra p=idPalabraJPA(word);
         if(p.getIdword()==-1){return new LinkedList<terminoxdocumento>();}
         int id=p.getIdword();
-        Query q=em.createQuery("select txd from terminoxdocumento txd where txd.idT=:id");
+        Query q;
+        q = em.createQuery("select txd from terminoxdocumento txd where txd.idT=:id order by txd.tf desc");
         q.setParameter("id",id);
        
         List<terminoxdocumento> list= q.setMaxResults(limit).getResultList();

@@ -18,7 +18,7 @@ public class BDHelperJPA {
     EntityManager em;
     EntityManagerFactory emf;
     EntityTransaction et;
-    int batchSize=300;
+    int batchSize=50;
     int contador;
     public BDHelperJPA(){
         contador=0;

@@ -29,8 +29,9 @@ public class Test {
 //    Controlador controlador = new Controlador();
 //        System.out.println(Arrays.toString(controlador.getDocumentosEnCarpeta("DocumentosTP1")));
 
-        //limpiarBD();
-        //guardarBD();
+        
+        limpiarBD();
+        guardarBD();
         buscarPalabras();
 
     }
