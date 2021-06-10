@@ -1,10 +1,23 @@
 package dbentities;
 
-public class Documento{
-    int id;
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name="documento")
+public class Documento implements Serializable{
+    @Id
+    @Column(name="iddoc")
+    int iddoc;
     String nombre;
     int words;
+    @Transient
     String ruta;
+    @Transient
     Vocabulario v;
     public Documento() {
         v=new Vocabulario();
@@ -17,7 +30,7 @@ public class Documento{
 
     public Documento(int id, String nombre, int words, String ruta) {
         
-        this.id = id;
+        this.iddoc = id;
         this.nombre = nombre;
         this.words = words;
         this.ruta = ruta;
@@ -25,8 +38,8 @@ public class Documento{
     public void addPalabra(String w){
         v.add(w);
     }
-    public void setId(int id) {
-        this.id = id;
+    public void setIddoc(int id) {
+        this.iddoc = id;
     }
     public boolean contains(String w){
         return this.v.contains(w);
@@ -44,12 +57,12 @@ public class Documento{
     }
 
     public Documento(int id, String nombre) {
-        this.id = id;
+        this.iddoc = id;
         this.nombre = nombre;
     }
 
-    public int getId() {
-        return id;
+    public int getIddoc() {
+        return iddoc;
     }
 
     public String getNombre() {
@@ -73,10 +86,10 @@ public class Documento{
 
     @Override
     public String toString() {
-        return "Documento{" + "id=" + id + ", nombre=" + nombre + ", words=" + words + ", ruta=" + ruta + ",voc="+v.size()+'}';
+        return "Documento{" + "id=" + iddoc + ", nombre=" + nombre + ", words=" + words + ", ruta=" + ruta + ",voc="+v.size()+'}';
     }
     public String longToString(){
-        StringBuilder sb= new  StringBuilder("Documento{" + "id=" + id + ", nombre=" + nombre + ", words=" + words + ", ruta=" + ruta + ",voc="+v.size()+"}\n");
+        StringBuilder sb= new  StringBuilder("Documento{" + "id=" + iddoc + ", nombre=" + nombre + ", words=" + words + ", ruta=" + ruta + ",voc="+v.size()+"}\n");
         sb.append(v.toString());
         return sb.toString();
     }

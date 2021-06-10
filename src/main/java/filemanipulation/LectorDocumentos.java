@@ -50,8 +50,8 @@ public class LectorDocumentos {
         }
         System.out.println(doc.longToString());
     }
-
-    public void guardarDocumentosBatch() {
+    public void guardarDocumentosJPABatch(){
+        System.out.println("JPA BATCH");
         LinkedList<String> rutas= new LinkedList<>();
         LinkedList<Documento> listDoc= new LinkedList<>();
         GestorVocabulario gv = new GestorVocabulario();
@@ -59,7 +59,78 @@ public class LectorDocumentos {
         int totalDocs=0;
         int cont=0;
         try{
-            File d=new File("../mifiles2");
+            File d=new File("../mifiles");
+            //File d = new File("../../Files");
+            Stream.of(d.listFiles((arch,nom)->nom.endsWith(".txt")))
+                .filter(p->p.isFile() && !p.isHidden())
+                .forEach(doc->rutas.addFirst(doc.toString()));
+            int docs=rutas.size();
+            System.out.println("Se deben procesar "+docs+" documentos");
+            
+            for(String ruta : rutas){
+                cont++;
+                leerRuta(ruta,listDoc);
+                if(cont==stepBatch){
+                    gv.guardarLoteDocumentosJPABatch(listDoc);
+                    totalDocs+=cont;
+                    cont=0;
+                    
+                    listDoc=new LinkedList<>();
+                    System.out.println("Se procesaron "+totalDocs+" documentos");
+                }
+            }
+            gv.guardarLoteDocumentosJPABatch(listDoc);
+            
+        }
+        catch(FileNotFoundException sqex){
+            System.out.println(sqex.getMessage());
+        }
+    }
+    public void guardarDocumentosJPA(){
+        System.out.println("JPA");
+        LinkedList<String> rutas= new LinkedList<>();
+        LinkedList<Documento> listDoc= new LinkedList<>();
+        GestorVocabulario gv = new GestorVocabulario();
+        int stepBatch=5;
+        int totalDocs=0;
+        int cont=0;
+        try{
+            File d=new File("mifiles");
+            //File d = new File("../../Files");
+            Stream.of(d.listFiles((arch,nom)->nom.endsWith(".txt")))
+                .filter(p->p.isFile() && !p.isHidden())
+                .forEach(doc->rutas.addFirst(doc.toString()));
+            int docs=rutas.size();
+            System.out.println("Se deben procesar "+docs+" documentos");
+            
+            for(String ruta : rutas){
+                cont++;
+                leerRuta(ruta,listDoc);
+                if(cont==stepBatch){
+                    gv.guardarDocumentosJPA(listDoc);
+                    totalDocs+=cont;
+                    cont=0;
+                    
+                    listDoc=new LinkedList<>();
+                    System.out.println("Se procesaron "+totalDocs+" documentos");
+                }
+            }
+            gv.guardarDocumentosJPA(listDoc);
+            
+        }
+        catch(FileNotFoundException sqex){
+            System.out.println(sqex.getMessage());
+        }
+    }
+    public void guardarDocumentosBatch() {
+        LinkedList<String> rutas= new LinkedList<>();
+        LinkedList<Documento> listDoc= new LinkedList<>();
+        GestorVocabulario gv = new GestorVocabulario();
+        int stepBatch=2;
+        int totalDocs=0;
+        int cont=0;
+        try{
+            File d=new File("mifiles2");
             //File d = new File("../../Files");
             Stream.of(d.listFiles((arch,nom)->nom.endsWith(".txt")))
                 .filter(p->p.isFile() && !p.isHidden())

@@ -5,7 +5,6 @@
  */
 package motor;
 
-import java.sql.ResultSet;
 
 /**
  *
@@ -15,6 +14,10 @@ public class AccessPoint {
     VocabularioFactory vf;
     public AccessPoint(){
         vf= new VocabularioFactory();
+    }
+    public Vocabulario crearVocabularioJPA(String palabras[],int limit){
+        Vocabulario v= vf.fabricarVocabularioJPA(palabras,limit);
+        return v;
     }
     public Vocabulario crearVocabulario(String palabras[]){
         Vocabulario v= vf.fabricarVocabulario(palabras);

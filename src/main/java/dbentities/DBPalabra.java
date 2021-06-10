@@ -8,6 +8,8 @@ package dbentities;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -15,32 +17,45 @@ import java.util.LinkedList;
  */
 public class DBPalabra {
     BDHelper help;
+    BDHelperJPA helpjpa;
     public DBPalabra(){
         help= new BDHelper();
+        helpjpa=new BDHelperJPA();
     }
     public void addPalabra(Palabra p)throws SQLException{
-        String cmd="INSERT INTO termino (nombre,MaxTF,iddoc,cantDoc,idword) values('"+p.getNombre()+"',0,0,0,"+p.getId()+")";
+        String cmd="INSERT INTO termino (nombre,MaxTF,iddoc,cantDoc,idword) values('"+p.getNombre()+"',0,0,0,"+p.getIdword()+")";
         help.modificarRegistro(cmd);
     }
+    public void addPalabraJPABatch(Palabra p, BDHelperJPA helpjpa){
+        helpjpa.persist(p);
+    }
+    public void addPalabraJPA(Palabra p){
+        EntityManager em = helpjpa.connect();
+        EntityTransaction t= em.getTransaction();
+        t.begin();
+        em.persist(p);
+        t.commit();
+        helpjpa.disconnect();
+    }
     public String addPalabraBatch(Palabra p,int iddoc){
-        return "INSERT INTO termino (nombre,MaxTF,iddoc,cantDoc,idword) values('"+p.getNombre()+"',"+p.getMaxtf()+","+iddoc+",0,"+p.getId()+")";
+        return "INSERT INTO termino (nombre,MaxTF,iddoc,cantDoc,idword) values('"+p.getNombre()+"',"+p.getMaxtf()+","+iddoc+",0,"+p.getIdword()+")";
     }
     public void addDoc(Palabra p)throws SQLException{
-        String cmd="UPDATE termino SET cantDoc=cantDoc+1 WHERE idword="+p.getId();
+        String cmd="UPDATE termino SET cantDoc=cantDoc+1 WHERE idword="+p.getIdword();
         help.modificarRegistro(cmd);
     }
     public void modificarMaxTf(Palabra p,int tf,int iddoc)throws SQLException{
-        String cmd= "UPDATE termino SET MaxTF="+tf+",iddoc="+iddoc+" WHERE idword="+p.getId();
+        String cmd= "UPDATE termino SET MaxTF="+tf+",iddoc="+iddoc+" WHERE idword="+p.getIdword();
         help.modificarRegistro(cmd);
     }
     public String cmdmodificarMaxTf(Palabra p,int tf,int iddoc){
-        return "UPDATE termino SET MaxTF="+tf+",iddoc="+iddoc+" WHERE idword="+p.getId();
+        return "UPDATE termino SET MaxTF="+tf+",iddoc="+iddoc+" WHERE idword="+p.getIdword();
     }
     public String addDocBatch(Palabra p){
-        return "UPDATE termino SET cantDoc=cantDoc+1 WHERE idword="+p.getId();
+        return "UPDATE termino SET cantDoc=cantDoc+1 WHERE idword="+p.getIdword();
     }
     public void eliminarPalabra(Palabra p)throws SQLException{
-        String cmd="DELETE FROM termino WHERE idword="+p.getId();
+        String cmd="DELETE FROM termino WHERE idword="+p.getIdword();
         help.modificarRegistro(cmd);
     }
     public void eliminarPalabra(Integer i)throws SQLException{
@@ -48,18 +63,18 @@ public class DBPalabra {
         help.modificarRegistro(cmd);
     }
     public String cmdeliminarPalabra(Integer i){
-        return "DELETE FROM termino WHERE idTermino="+i;
+        return "DELETE FROM termino WHERE idword="+i;
     }
     public int lastIdAlter(){
         return help.leerLastIdAlter();
     }
     public LinkedList<Integer> leerIdTermino()throws SQLException{
-        String cmd ="select idTermino from termino";
+        String cmd ="select idword from termino";
         LinkedList<Integer> list = new LinkedList<>();
         ResultSet rs = help.leerDatos(cmd);
         
         while(rs.next()){
-            Integer n=rs.getInt("idTermino");
+            Integer n=rs.getInt("idword");
             list.addLast(n);
             
         }

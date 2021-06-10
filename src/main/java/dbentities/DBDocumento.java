@@ -8,6 +8,8 @@ package dbentities;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 /**
  *
@@ -15,22 +17,35 @@ import java.util.LinkedList;
  */
 public class DBDocumento {
     BDHelper help;
+    BDHelperJPA helpjpa;
     public DBDocumento(){
         help = new BDHelper();
+        helpjpa=new BDHelperJPA();
     }
     public void addDoc(Documento d)throws SQLException{
-        String cmd="INSERT INTO documento (nombre,words,iddoc) values('"+d.getNombre()+"',"+d.getWords()+","+d.getId()+")";
+        String cmd="INSERT INTO documento (nombre,words,iddoc) values('"+d.getNombre()+"',"+d.getWords()+","+d.getIddoc()+")";
         help.modificarRegistro(cmd);
     }
+    public void addDocJPA(Documento d){
+        EntityManager em =helpjpa.connect();
+        EntityTransaction t= em.getTransaction();
+        t.begin();
+        em.persist(d);
+        t.commit();
+        helpjpa.disconnect();
+    }
+    public void addDocJPABatch(Documento d,BDHelperJPA helpjpa){
+        helpjpa.persist(d);
+    }
     public String addDocBatch(Documento d){
-        return "INSERT INTO documento (nombre,words,iddoc) values('"+d.getNombre()+"',"+d.getWords()+","+d.getId()+")";
+        return "INSERT INTO documento (nombre,words,iddoc) values('"+d.getNombre()+"',"+d.getWords()+","+d.getIddoc()+")";
     }
     public void addWord(Documento d)throws SQLException{
-        String cmd="UPDATE documento SET words=words+1 WHERE iddoc="+d.getId();
+        String cmd="UPDATE documento SET words=words+1 WHERE iddoc="+d.getIddoc();
         help.modificarRegistro(cmd);
     }
     public void deleteDoc(Documento d)throws SQLException{
-        String cmd="DELETE FROM documento WHERE iddoc="+d.getId();
+        String cmd="DELETE FROM documento WHERE iddoc="+d.getIddoc();
         help.modificarRegistro(cmd);
     }
     public void deleteDoc(Integer i)throws SQLException{
@@ -38,15 +53,15 @@ public class DBDocumento {
         help.modificarRegistro(cmd);
     }
     public String cmddeleteDoc(Integer i){
-        return "DELETE FROM documento WHERE id="+i;
+        return "DELETE FROM documento WHERE iddoc="+i;
     } 
     public LinkedList<Integer> leerIdDocumento()throws SQLException{
-        String cmd ="select id from documento";
+        String cmd ="select iddoc from documento";
         LinkedList<Integer> list = new LinkedList<>();
         ResultSet rs = help.leerDatos(cmd);
         
         while(rs.next()){
-            Integer n=rs.getInt("id");
+            Integer n=rs.getInt("iddoc");
             list.addLast(n);
             
         }

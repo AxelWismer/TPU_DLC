@@ -1,10 +1,20 @@
 package dbentities;
 
-import java.util.Objects;
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class Palabra{
-    int id;
+
+@Entity
+@Table(name="termino")
+public class Palabra implements Serializable{
+    @Id
+    @Column(name="idword")
+    int idword;
     String  nombre;
+    @Column(name="MaxTf")
     int maxtf;
     int iddoc;
     int cantdoc;
@@ -14,7 +24,7 @@ public class Palabra{
 
     @Override
     public String toString() {
-        return "Palabra{" + "id=" + id + ", nombre=" + nombre + ", maxtf=" + maxtf + ", iddoc=" + iddoc + ", cantdoc=" + cantdoc + '}';
+        return "Palabra{" + "id=" + idword + ", nombre=" + nombre + ", maxtf=" + maxtf + ", iddoc=" + iddoc + ", cantdoc=" + cantdoc + '}';
     }
     public Palabra(String nombre){
         this.nombre=nombre;
@@ -22,26 +32,26 @@ public class Palabra{
         maxtf=0;
     }
     public Palabra(int id, String nombre) {
-        this.id = id;
+        this.idword = id;
         this.nombre = nombre;
         cantdoc=0;
         maxtf=0;
     }
     public Palabra(int id,String nombre,int maxTf){
-        this.id=id;
+        this.idword=id;
         this.nombre=nombre;
         this.maxtf=maxTf;
     }
     public Palabra(int id, String nombre, int maxtf, int iddoc, int cantdoc) {
-        this.id = id;
+        this.idword = id;
         this.nombre = nombre;
         this.maxtf = maxtf;
         this.iddoc = iddoc;
         this.cantdoc = cantdoc;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdword(int id) {
+        this.idword = id;
     }
 
     public void setNombre(String nombre) {
@@ -62,8 +72,8 @@ public class Palabra{
     public void sumDoc(){
         cantdoc++;
     }
-    public int getId() {
-        return id;
+    public int getIdword() {
+        return idword;
     }
 
     public String getNombre() {

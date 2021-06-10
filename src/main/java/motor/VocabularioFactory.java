@@ -14,6 +14,16 @@ public class VocabularioFactory {
     public VocabularioFactory(){
         pf= new PalabraFactory();
     }
+    public Vocabulario fabricarVocabularioJPA(String words[],int limit){
+        Vocabulario v= new Vocabulario();
+        if(words.length==0){return v;}
+        int len=words.length;
+        for(int i=0;i<len;i++){
+            Palabra p= pf.fabricarPalabraJPA(words[i],limit);
+            v.vocabulario.put(words[i], p);
+        }
+        return v;
+    }
     public Vocabulario fabricarVocabulario(String words[],int limit){
         Vocabulario v= new Vocabulario();
         if(words.length==0){return v;}

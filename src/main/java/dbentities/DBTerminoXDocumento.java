@@ -8,6 +8,10 @@ package dbentities;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 /**
  *
@@ -15,26 +19,41 @@ import java.util.LinkedList;
  */
 public class DBTerminoXDocumento {
     BDHelper help;
+    BDHelperJPA helpjpa;
     public DBTerminoXDocumento(){
         help= new BDHelper();
+        helpjpa=new BDHelperJPA(); 
+    }
+    public void addTermXDocJPA(Documento d,Palabra p, int tf){
+        EntityManager em=helpjpa.connect();
+        terminoxdocumento dxt=new terminoxdocumento(d.getIddoc(),p.getIdword(),tf);
+        EntityTransaction t= em.getTransaction();
+        t.begin();
+        em.persist(dxt);
+        t.commit();
+        helpjpa.disconnect();
+    }
+    public void addTermXDocJPABatch(Documento d,Palabra p, int tf,BDHelperJPA helpjpa){
+        terminoxdocumento dxt=new terminoxdocumento(d.getIddoc(),p.getIdword(),tf);
+        helpjpa.persist(dxt);
     }
     public void addTermXDoc(Documento d,Palabra p, int tf)throws SQLException{
-        String cmd="INSERT INTO terminoxdocumento (idT,idD,tf) values("+p.getId()+","+d.getId()+","+tf+")";
+        String cmd="INSERT INTO terminoxdocumento (idT,idD,tf) values("+p.getIdword()+","+d.getIddoc()+","+tf+")";
         help.modificarRegistro(cmd);      
     }
     public String addTermXDocBatch(Documento d,Palabra p,int tf){
-        return "INSERT INTO terminoxdocumento (idT,idD,tf) values("+p.getId()+","+d.getId()+","+tf+")";
+        return "INSERT INTO terminoxdocumento (idT,idD,tf) values("+p.getIdword()+","+d.getIddoc()+","+tf+")";
     }
     public void addTermXDoc(Documento d,Palabra p)throws SQLException{
-        String cmd="INSERT INTO terminoxdocumento (idT,idD,tf) values("+p.getId()+","+d.getId()+",0)";
+        String cmd="INSERT INTO terminoxdocumento (idT,idD,tf) values("+p.getIdword()+","+d.getIddoc()+",0)";
         help.modificarRegistro(cmd);
     }
     public void addFrec(Documento d,Palabra p)throws SQLException{
-        String cmd="UPDATE terminoxdocumento SET tf=tf+1 WHERE idT="+p.getId()+" and idD="+d.getId();
+        String cmd="UPDATE terminoxdocumento SET tf=tf+1 WHERE idT="+p.getIdword()+" and idD="+d.getIddoc();
         help.modificarRegistro(cmd);
     }
     public void eliminarTxD(Documento d,Palabra p)throws SQLException{
-        String cmd="DELETE FROM terminoxdocumento WHERE idT="+p.getId()+" and idD="+d.getId();
+        String cmd="DELETE FROM terminoxdocumento WHERE idT="+p.getIdword()+" and idD="+d.getIddoc();
         help.modificarRegistro(cmd);       
     }
     public void eliminarTxD(Integer i)throws SQLException{
@@ -59,5 +78,9 @@ public class DBTerminoXDocumento {
         return list;
         
     }
-    
+    public List<terminoxdocumento> leerTerminoXdocumento(){
+        EntityManager em=helpjpa.connect();
+        Query q = em.createQuery("select txd from terminoxdocumento txd");
+        return q.getResultList();
+    }
 }

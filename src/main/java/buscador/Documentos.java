@@ -44,12 +44,13 @@ public class Documentos {
 
     //Devuelve la lista de los R elementos con mas palabras ordenados de forma descendente
     public List documentosOrdenados(int R){
-        List ordenados = new ArrayList(entriesSortedByValues(this.documentos));
+        List<Documentos> ordenados = new ArrayList(entriesSortedByValues(this.documentos));
         if (ordenados.size() < R) {
             return ordenados;
         }
         else {
             return ordenados.subList(0, R);
         }
+        
     }
 }

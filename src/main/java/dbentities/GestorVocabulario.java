@@ -31,7 +31,14 @@ public class GestorVocabulario {
         idwords=dbp.leerUltimoIdInsertado();
         batchs=0;
     }
+    public void guardarDocumentosJPA(LinkedList<Documento> docs){
+        System.out.println("Estas en guardarDocumentos JPA");
+        for(Documento d: docs){
+            guardarDocumentoJPA(d);
+        }
+    }
     
+    /*Bloque de codigo de registro de datos utilizando JDBC*/
     public int[] guardarLoteDocumentosBatch(LinkedList<Documento> docs)throws SQLException{
         BDHelper help= new BDHelper();
         help.newBatch();
@@ -42,7 +49,7 @@ public class GestorVocabulario {
     }
     public void guardarDocumentoBatch(Documento d,BDHelper help)throws SQLException{
         iddocs++;
-        d.setId(iddocs);
+        d.setIddoc(iddocs);
         help.addBatch(dbd.addDocBatch(d));
         batchs++;
         Iterator it=d.getV().iterator();
@@ -52,21 +59,22 @@ public class GestorVocabulario {
             Entry<String,Palabra> e=(Entry<String,Palabra>)it.next();
             String w=e.getKey();
             Palabra p=e.getValue();
-            actualizarVocabularioBatch(w,p,help,d.getId());
+            actualizarVocabularioBatch(w,p,help,d.getIddoc());
             agregarTerminoXDocumentoBatch(d,w,p.getMaxtf(),help);
-            if(50000==cont){
+            if(500==cont){
                 cont=0;
                 help.runBatch();
                 help.newBatch();
             }
             if(batchs%10000==0){
+                System.out.println("Estas en guardarDocumentos Batch");
                 System.out.println("Ya van "+batchs+"insertados");
             }
         }
     }
     public void guardarDocumento(Documento d)throws SQLException{
         iddocs++;
-        d.setId(iddocs);
+        d.setIddoc(iddocs);
         
         try
         {dbd.addDoc(d);
@@ -100,7 +108,7 @@ public class GestorVocabulario {
                 Palabra pv=v.get(w);
                 if(pv.getMaxtf()<p.getMaxtf()){
                     pv.setMaxtf(p.getMaxtf());
-                    dbp.modificarMaxTf(pv, pv.getMaxtf(), d.getId());
+                    dbp.modificarMaxTf(pv, pv.getMaxtf(), d.getIddoc());
                 }
                 dbp.addDoc(pv);
             }
@@ -157,6 +165,8 @@ public class GestorVocabulario {
         }
     }
 
+    
+    /*Bloque de codigo para limpiar la base de datos*/
     public void limpiarBd(){
         limpiarTxD();
         limpiarD();
@@ -292,4 +302,80 @@ public class GestorVocabulario {
         }          
            
     }
+    /*Bloque de codigo del registro de datos utilizando JPA*/
+    private void guardarDocumentoJPA(Documento d) {
+        iddocs++;
+        d.setIddoc(iddocs);
+        
+        dbd.addDocJPA(d);
+        Iterator it = d.getV().iterator();
+        while(it.hasNext())
+        {
+            Entry<String,Palabra> e=(Entry<String,Palabra>)it.next();
+            String w=e.getKey();
+            Palabra p=e.getValue();
+            actualizarVocabularioJPA(w,p,d);
+            agregarTerminoXDocumento(d,w,p.getMaxtf());
+        }  
+    }
+    public void actualizarVocabularioJPA(String w,Palabra p, Documento d){
+        if(!v.contains(w)){
+            v.add(w,p.getMaxtf());
+            Palabra pv=v.get(w);
+           dbp.addPalabraJPA(pv);        
+        }
+        else{
+            Palabra pv=v.get(w);
+            if(pv.getMaxtf()<p.getMaxtf()){
+                pv.setMaxtf(p.getMaxtf());
+            }
+        } 
+    }
+    public void agregarTerminoXDocumentoJPA(Documento d,String w, int tf){
+            Palabra pv=v.get(w);
+            dbtxd.addTermXDocJPA(d, pv, tf);
+
+    }
+
+    public void guardarLoteDocumentosJPABatch(LinkedList<Documento> docs){
+        BDHelperJPA helpjpa= new BDHelperJPA();
+        helpjpa.beginTransaction();
+        for(Documento d:docs){
+            guardarDocumentoJPABatch(d,helpjpa);
+        }
+        helpjpa.disconnect();
+    }
+    public void guardarDocumentoJPABatch(Documento d,BDHelperJPA helpjpa){
+        iddocs++;
+        d.setIddoc(iddocs);
+        
+        dbd.addDocJPABatch(d,helpjpa);
+        Iterator it = d.getV().iterator();
+        while(it.hasNext())
+        {
+            Entry<String,Palabra> e=(Entry<String,Palabra>)it.next();
+            String w=e.getKey();
+            Palabra p=e.getValue();
+            actualizarVocabularioJPABatch(w,p,d,helpjpa);
+            agregarTerminoXDocumento(d,w,p.getMaxtf());
+        } 
+    }
+    public void actualizarVocabularioJPABatch(String w,Palabra p, Documento d,BDHelperJPA helpjpa){
+        if(!v.contains(w)){
+            v.add(w,p.getMaxtf());
+            Palabra pv=v.get(w);
+           dbp.addPalabraJPABatch(pv,helpjpa);        
+        }
+        else{
+            Palabra pv=v.get(w);
+            if(pv.getMaxtf()<p.getMaxtf()){
+                pv.setMaxtf(p.getMaxtf());
+            }
+        } 
+    }
+    public void agregarTerminoXDocumento(Documento d,String w,int tf,BDHelperJPA helpjpa){
+            Palabra pv=v.get(w);
+            dbtxd.addTermXDocJPABatch(d, pv, tf,helpjpa);
+    }
+    
 }
