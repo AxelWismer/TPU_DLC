@@ -20,7 +20,7 @@ public class DBPalabra {
     BDHelper help;
     BDHelperJPA helpjpa;
     public DBPalabra(){
-        help= new BDHelper();
+        //help= new BDHelper();
         helpjpa=new BDHelperJPA();
     }
     public void addPalabra(Palabra p)throws SQLException{
@@ -103,6 +103,11 @@ public class DBPalabra {
     }
     public int leerUltimoIdInsertado(){
         return help.leerUltimoIdTabla("termino","idword");
+    }
+    public int leerUltimoInsertadoJPA(){
+        EntityManager em =helpjpa.connect();
+        Palabra p= (Palabra)em.createQuery("select p from Palabra p order by p.idword desc").getResultList().get(0);
+        return p.getIdword();
     }
     private int matId(ResultSet rs) throws SQLException{
         int id=-1;

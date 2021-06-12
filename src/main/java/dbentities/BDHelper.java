@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class BDHelper{
 	//final String url="jdbc:mysql://localhost:3306/busquedabdtest?zeroDateTimeBehavior=CONVERT_TO_NULL";
         //jdbc:mariadb://localhost:3386/busqueda
-        final String url="jdbc:mariadb://localhost:3386/busqueda";
+        final String url="jbc:mariadb://localhost:3376/busqueda";
         final String user="root";
         final String pass="GerardoSofovich";
         private Connection con;
@@ -24,6 +24,7 @@ public class BDHelper{
         private Statement stmb;
         public BDHelper(){
             cont=0;
+            //System.out.println("Usando BDhelper");
         }
         private static void shwcnt(){
             System.out.println("contador es: "+cont);
@@ -52,7 +53,7 @@ public class BDHelper{
             catch(SQLException ex){
                   System.out.println(ex.getMessage());
             }
-
+            rs=null;
             return rs;
 
         

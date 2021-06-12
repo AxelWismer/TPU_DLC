@@ -28,8 +28,8 @@ public class GestorVocabulario {
         dbp=new DBPalabra();
         dbtxd= new DBTerminoXDocumento();
         v = new Vocabulario();
-        iddocs=dbd.leerUltimoIdInsertado();
-        idwords=dbp.leerUltimoIdInsertado();
+        iddocs=dbd.leerUltimoIdInsertadoJPA();
+        idwords=dbp.leerUltimoInsertadoJPA();
         batchs=0;
         leerVocabulario();
     }
@@ -360,7 +360,7 @@ public class GestorVocabulario {
             String w=e.getKey();
             Palabra p=e.getValue();
             actualizarVocabularioJPABatch(w,p,d,helpjpa);
-            agregarTerminoXDocumento(d,w,p.getMaxtf());
+            agregarTerminoXDocumento(d,w,p.getMaxtf(),helpjpa);
         } 
     }
     public void actualizarVocabularioJPABatch(String w,Palabra p, Documento d,BDHelperJPA helpjpa){

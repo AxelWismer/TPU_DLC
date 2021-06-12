@@ -30,7 +30,7 @@ public class Test {
 //        System.out.println(Arrays.toString(controlador.getDocumentosEnCarpeta("DocumentosTP1")));
 
         
-        buscarPalabras(new String[]{"armas"});
+        addDoc();
 
     }
     private static void buscarPalabras(String[] lista){

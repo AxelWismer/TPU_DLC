@@ -21,7 +21,7 @@ public class DBTerminoXDocumento {
     BDHelper help;
     BDHelperJPA helpjpa;
     public DBTerminoXDocumento(){
-        help= new BDHelper();
+        //help= new BDHelper();
         helpjpa=new BDHelperJPA(); 
     }
     public void addTermXDocJPA(Documento d,Palabra p, int tf){

@@ -19,7 +19,7 @@ public class DBDocumento {
     BDHelper help;
     BDHelperJPA helpjpa;
     public DBDocumento(){
-        help = new BDHelper();
+        //help = new BDHelper();
         helpjpa=new BDHelperJPA();
     }
     public void addDoc(Documento d)throws SQLException{
@@ -71,6 +71,11 @@ public class DBDocumento {
     }
     public int leerUltimoIdInsertado(){
         return help.leerUltimoIdTabla("documento", "iddoc");
+    }
+    public int leerUltimoIdInsertadoJPA(){
+        EntityManager em =helpjpa.connect();
+        Documento d= (Documento)em.createQuery("select d from Documento d order by d.iddoc desc").getResultList().get(0);
+        return d.getIddoc();
     }
     public int lastId(){
        int id=-1;
