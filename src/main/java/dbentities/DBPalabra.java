@@ -8,6 +8,7 @@ package dbentities;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
@@ -36,6 +37,10 @@ public class DBPalabra {
         em.persist(p);
         t.commit();
         helpjpa.disconnect();
+    }
+    public List<Palabra> leetPalabraJPA(){
+        EntityManager em = helpjpa.connect();
+        return em.createQuery("select p from Palabra p").getResultList();
     }
     public String addPalabraBatch(Palabra p,int iddoc){
         return "INSERT INTO termino (nombre,MaxTF,iddoc,cantDoc,idword) values('"+p.getNombre()+"',"+p.getMaxtf()+","+iddoc+",0,"+p.getIdword()+")";

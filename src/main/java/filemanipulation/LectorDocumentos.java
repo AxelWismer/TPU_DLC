@@ -50,6 +50,53 @@ public class LectorDocumentos {
         }
         System.out.println(doc.longToString());
     }
+    private void guardar(String mensaje,String dirRuta){
+        
+    }
+    public void guardarDocumentoAdd(){
+        System.out.println("Add Document");
+        LinkedList<String> rutas= new LinkedList<>();
+        LinkedList<Documento> listDoc= new LinkedList<>();
+        GestorVocabulario gv = new GestorVocabulario();
+        int stepBatch=2;
+        int totalDocs=0;
+        int cont=0;
+        try{
+            String rutaDir="add";
+            int charsRuta=rutaDir.length();
+            File d=new File("add");
+            //File d = new File("../../Files");
+            Stream.of(d.listFiles((arch,nom)->nom.endsWith(".txt")))
+                .filter(p->p.isFile() && !p.isHidden())
+                .forEach(doc->rutas.addFirst(doc.toString()));
+            int docs=rutas.size();
+            System.out.println("Se deben procesar "+docs+" documentos");
+            long t1=System.currentTimeMillis();
+            for(String ruta : rutas){
+                cont++;
+                leerRuta(ruta,listDoc,charsRuta+1);
+                if(cont==stepBatch){
+                    gv.guardarLoteDocumentosJPABatch(listDoc);
+                    totalDocs+=cont;
+                    cont=0;
+                    
+                    listDoc=new LinkedList<>();
+                    System.out.println("Se procesaron "+totalDocs+" documentos");
+                }
+                if(totalDocs==100){
+                    System.out.println("Se procesaron 100 documetnos");
+                    break;
+                }
+            }
+            gv.guardarLoteDocumentosJPABatch(listDoc);
+            long t2 = System.currentTimeMillis();
+            long tt=t2-t1;
+            System.out.println("Se tardo "+tt+" milisegundos en procesar 100 docs");
+        }
+        catch(FileNotFoundException sqex){
+            System.out.println(sqex.getMessage());
+        }
+    }
     public void guardarDocumentosJPABatch(){
         System.out.println("JPA BATCH");
         LinkedList<String> rutas= new LinkedList<>();
@@ -59,6 +106,8 @@ public class LectorDocumentos {
         int totalDocs=0;
         int cont=0;
         try{
+            String rutaDir="../Files";
+            int charsRuta=rutaDir.length()+1;
             File d=new File("../Files");
             //File d = new File("../../Files");
             Stream.of(d.listFiles((arch,nom)->nom.endsWith(".txt")))
@@ -69,7 +118,7 @@ public class LectorDocumentos {
             long t1=System.currentTimeMillis();
             for(String ruta : rutas){
                 cont++;
-                leerRuta(ruta,listDoc);
+                leerRuta(ruta,listDoc,charsRuta);
                 if(cont==stepBatch){
                     gv.guardarLoteDocumentosJPABatch(listDoc);
                     totalDocs+=cont;
@@ -195,6 +244,22 @@ public class LectorDocumentos {
             System.out.println(ex.getMessage());
         }       
     }
+    private void leerRuta(String ruta,LinkedList<Documento> listDoc,int offset)throws FileNotFoundException{
+        Documento doc= new Documento(findNombre(ruta,offset),ruta);
+        doc.setWords(0);
+        Scanner sc = new Scanner(new BufferedReader(new FileReader(ruta)));
+        sc.useDelimiter("[«»“�?·—’=* .,\\r\\n\\[\\]'\\(\\)\\-\":;0-9]");
+        while(sc.hasNext()){            
+            String palabra=sc.next();
+            if(!palabra.isEmpty()){
+                doc.sum();
+                palabra=palabra.toLowerCase();
+                
+                doc.addPalabra(palabra);
+            }
+        }
+        listDoc.addLast(doc);
+    }
     private void leerRuta(String ruta,LinkedList<Documento> listDoc)throws FileNotFoundException{
         Documento doc= new Documento(findNombre(ruta),ruta);
         doc.setWords(0);
@@ -211,6 +276,14 @@ public class LectorDocumentos {
         }
         listDoc.addLast(doc);
     }
+    private String findNombre(String ruta,int offset){
+                char[] ch=ruta.toCharArray();
+                String nombre="";
+                for(int i=offset;i<ch.length;i++){
+                    nombre+=ch[i];
+                }
+		return nombre;
+	}
     private String findNombre(String ruta){
                 char[] ch=ruta.toCharArray();
                 String nombre="";
@@ -218,5 +291,7 @@ public class LectorDocumentos {
                     nombre+=ch[i];
                 }
 		return nombre;
-	}
+    }
 }
+    
+

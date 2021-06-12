@@ -30,10 +30,16 @@ public class Test {
 //        System.out.println(Arrays.toString(controlador.getDocumentosEnCarpeta("DocumentosTP1")));
 
         
-        limpiarBD();
-        guardarBD();
-        buscarPalabras();
+        buscarPalabras(new String[]{"armas"});
 
+    }
+    private static void buscarPalabras(String[] lista){
+        Buscador b = new  Buscador();
+        List<Documentos> list;
+        list = b.buscar(lista, 10);
+        for(Object o : list){
+            System.out.println(o);
+        }
     }
     private static void buscarPalabras(){
         Buscador b = new  Buscador();
@@ -43,6 +49,17 @@ public class Test {
             System.out.println(o);
         }
             
+    }
+    private static void addDoc(){
+        LectorDocumentos ld = new LectorDocumentos();
+        ld.guardarDocumentoAdd();
+        System.out.println("Termine");
+        Buscador b = new  Buscador();
+        List<Documentos> list;
+        list = b.buscar(new String[] {"geheiligten"}, 10);
+        for(Object o : list){
+            System.out.println(o);
+        }
     }
     private static void guardarBD(){
         LectorDocumentos ld = new LectorDocumentos();

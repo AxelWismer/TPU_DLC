@@ -8,6 +8,7 @@ package dbentities;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 
 /**
@@ -30,7 +31,9 @@ public class GestorVocabulario {
         iddocs=dbd.leerUltimoIdInsertado();
         idwords=dbp.leerUltimoIdInsertado();
         batchs=0;
+        leerVocabulario();
     }
+    
     public void guardarDocumentosJPA(LinkedList<Documento> docs){
         System.out.println("Estas en guardarDocumentos JPA");
         for(Documento d: docs){
@@ -376,6 +379,13 @@ public class GestorVocabulario {
     public void agregarTerminoXDocumento(Documento d,String w,int tf,BDHelperJPA helpjpa){
             Palabra pv=v.get(w);
             dbtxd.addTermXDocJPABatch(d, pv, tf,helpjpa);
+    }
+    private void leerVocabulario(){
+        List<Palabra> lista=dbp.leetPalabraJPA();
+        for(Palabra p : lista){
+            v.add(p.nombre);
+        }
+        
     }
     
 }
