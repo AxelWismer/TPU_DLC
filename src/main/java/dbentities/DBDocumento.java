@@ -75,6 +75,7 @@ public class DBDocumento {
     public int leerUltimoIdInsertadoJPA(){
         EntityManager em =helpjpa.connect();
         Documento d= (Documento)em.createQuery("select d from Documento d order by d.iddoc desc").getResultList().get(0);
+        helpjpa.disconnect();
         return d.getIddoc();
     }
     public int lastId(){

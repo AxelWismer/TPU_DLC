@@ -4,9 +4,12 @@ import java.io.*;
 import java.util.Arrays;
 import buscador.Buscador;
 import buscador.Documentos;
+import dbentities.DBTerminoXDocumento;
 import dbentities.GestorVocabulario;
+import dbentities.terminoxdocumento;
 import java.util.List;
 import filemanipulation.*;
+import static java.util.Collections.list;
 import java.util.Iterator;
 public class Test {
     public static void main(String[] args) {
@@ -29,10 +32,12 @@ public class Test {
 //    Controlador controlador = new Controlador();
 //        System.out.println(Arrays.toString(controlador.getDocumentosEnCarpeta("DocumentosTP1")));
 
-        
         addDoc();
-
+        //buscarPalabras(new String[] {"armas"});
+        //guardarBD();
     }
+
+
     private static void buscarPalabras(String[] lista){
         Buscador b = new  Buscador();
         List<Documentos> list;

@@ -107,6 +107,7 @@ public class DBPalabra {
     public int leerUltimoInsertadoJPA(){
         EntityManager em =helpjpa.connect();
         Palabra p= (Palabra)em.createQuery("select p from Palabra p order by p.idword desc").getResultList().get(0);
+        helpjpa.disconnect();
         return p.getIdword();
     }
     private int matId(ResultSet rs) throws SQLException{

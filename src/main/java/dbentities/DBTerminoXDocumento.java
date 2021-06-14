@@ -37,6 +37,12 @@ public class DBTerminoXDocumento {
         terminoxdocumento dxt=new terminoxdocumento(d.getIddoc(),p.getIdword(),tf);
         helpjpa.persist(dxt);
     }
+    public List leerTodostxd(){
+        EntityManager em = helpjpa.connect();
+        List list = em.createQuery("select txd from terminoxdocumento txd ").getResultList();
+        helpjpa.disconnect();
+       return list;
+    }
     public void addTermXDoc(Documento d,Palabra p, int tf)throws SQLException{
         String cmd="INSERT INTO terminoxdocumento (idT,idD,tf) values("+p.getIdword()+","+d.getIddoc()+","+tf+")";
         help.modificarRegistro(cmd);      
